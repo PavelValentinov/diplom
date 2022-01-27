@@ -6,6 +6,8 @@ from app import views
 
 router = DefaultRouter()
 router.register("products", views.ProductApiView)
+router.register("category", views.CategoryApiView)
+# router.register("products_info", views.ProductInfoApiView)
 
 
 urlpatterns = [

@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView
@@ -7,8 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from app.forms import UserRegistrationForm, LoginForm
-from app.models import User, Product, ProductInfo
-from .serializers import UserSerializer, ProductSerializer
+from app.models import User, Product, ProductInfo, Category
+from .serializers import UserSerializer, ProductSerializer, ProductInfoSerializer, CategorySerializer
 from app.serializers import UserSerializer
 
 
@@ -48,18 +49,45 @@ def users_view(request):
 class ProductApiView(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    search_fields = ['name']
+
+class CategoryApiView(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    search_fields = ['name']
+
+
+# class ProductInfoApiView(ModelViewSet):
+#     serializer_class = ProductInfoSerializer
+#
+#     search_fields = ['product__name', 'model']
+#
+#     def get_queryset(self):
+#         query = Q(shop__state=True)
+#
+#         shop_id = self.request.GET.get('shop_id', None)
+#         category_id = self.request.GET.get('category_id', None)
+#
+#         if shop_id:
+#             query = query & Q(shop_id=shop_id)
+#
+#         if category_id:
+#             query = query & Q(product__category_id=category_id)
+#
+#         queryset = ProductInfo.objects.filter(query).select_related(
+#             'shop', 'product__category').prefetch_related(
+#             'product_parameters__parameter').distinct()
+#
+#         return queryset
 
 
 
 def products_detail_view(request, slug):
     template = 'product_detail.html'
     context = {}
+    # product_info = ProductInfo.objects.filter(product_id=request.product.id)
     product = Product.objects.filter(slug=slug)
-    product_info = ProductInfo.objects.filter(product_id=product)
-    context = {
-        'product': product,
-        'product_info': product_info
-    }
+    context['product'] = product
     return render(request, template, context)
 
 def register_view(request):
