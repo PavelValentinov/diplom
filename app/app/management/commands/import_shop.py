@@ -6,6 +6,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 
 from app.models import Shop, Category, ProductInfo, Product, ProductParameter, Parameter
+from yaml import Loader
+
 
 class PartnerUpdate(APIView):
     """

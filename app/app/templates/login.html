@@ -1,0 +1,22 @@
+{% include "header.html" %}
+
+<div class="container">
+    <div>
+        <div id="content">
+            {% block content %}
+            <h1>Авторизация на сайте</h1>
+            <p>Пожалуйста, заполните поля:</p>
+            <form action="." method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <p><input type="submit" value="Вход"></p>
+            </form>
+        {% endblock %}
+        </div>
+    </div>
+ </div>
+{% include "footer.html" %}
+
+
+
+

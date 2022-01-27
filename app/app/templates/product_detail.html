@@ -1,15 +1,24 @@
 {% include "header.html" %}
 {% load staticfiles %}
     <div class="container">
-     <H2>Список товаров</H2>
-           <div class="row row-cols-2 row-cols-lg-3">
+        <div>
+             <h5>
+      <a href="{% url 'products' %}">Вернуться в каталог</a>
+    </h5>
+
+     <H2>{{ product.name }}</H2>
+
+
+<ul>
     {% for pr in product %}
 
-        <div class="col">{{ pr.name }}<br>
+        <li>{{ pr.name }}<br>
             <img src="{% static pr.image.url %}" alt=" {{ pr.name }}" width="197px"> <br>
-            <a href="{{ pr.slug }}"><button type="button" class="btn btn-secondary">Подробнее</button></a>
-        </div>
+        </li>
+
     {% endfor %}
+</ul>
+
         </div>
     </div>
 

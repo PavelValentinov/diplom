@@ -4,6 +4,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
+from autoslug import AutoSlugField
 
 STATE_CHOICES = (
     ('basket', 'Статус корзины'),
@@ -135,6 +136,10 @@ class Product(models.Model):
     name = models.CharField(max_length=80, verbose_name='Название')
     category = models.ForeignKey(Category, verbose_name='Категория', related_name='products', blank=True,
                                  on_delete=models.CASCADE)
+    # slug = models.SlugField(max_length=70, unique=True, default='/')
+    slug = AutoSlugField(populate_from='name', max_length=70, unique=True)
+
+    image = models.ImageField(upload_to='images/', default='no_photo.png')
 
     class Meta:
         verbose_name = 'Продукт'
