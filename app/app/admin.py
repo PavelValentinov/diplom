@@ -2,12 +2,6 @@ from django.contrib import admin
 
 from app.models import *
 
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category_id')
-    list_display_links = ('id', 'name')
-    search_fields = ('name', 'category_id')
-
-# admin.site.register(Product, ProductAdmin)
 
 @admin.register(Shop)
 class ShopAdmin(admin.ModelAdmin):
@@ -21,7 +15,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'name', 'category')
+    list_display_links = ('id', 'name')
 
 
 @admin.register(ProductInfo)

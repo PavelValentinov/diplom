@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
 from autoslug import AutoSlugField
@@ -108,7 +109,6 @@ class Shop(models.Model):
                                 on_delete=models.CASCADE)
     state = models.BooleanField(verbose_name='статус получения заказов', default=True)
 
-    # filename
 
     class Meta:
         verbose_name = 'Магазин'
@@ -136,7 +136,6 @@ class Product(models.Model):
     name = models.CharField(max_length=80, verbose_name='Название')
     category = models.ForeignKey(Category, verbose_name='Категория', related_name='products', blank=True,
                                  on_delete=models.CASCADE)
-    # slug = models.SlugField(max_length=70, unique=True, default='/')
     slug = AutoSlugField(populate_from='name', max_length=70, unique=True)
 
     image = models.ImageField(upload_to='images/', default='no_photo.png')
@@ -144,13 +143,13 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = "Список продуктов"
-        ordering = ('-name',)
+        ordering = ('id',)
 
     def __str__(self):
         return self.name
     # Добаляем кнопку в админке "смотреть на сайте"
-    # def get_absolute_url(self):
-    #     return reverse('post', kwargs={'name': self.pk})
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'name': self.pk})
 
 
 class ProductInfo(models.Model):

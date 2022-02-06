@@ -9,47 +9,69 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'first_name', 'last_name', 'email', 'company', 'position', 'username', 'is_active', 'type')
 
+
 class ShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
-        fields = ('id', 'name', 'url', 'state', 'user_id')
+        fields = ('id', 'name', 'url', 'state', 'user')
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name')
 
+
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'name', 'category_id')
+        fields = ('id', 'name', 'category', 'slug', 'image')
 
-class ProductInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductInfo
-        fields = ('id', 'model', 'external_id', 'quantity', 'price', 'price_rrc', 'product_id', 'shop_id')
 
 class ParameterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parameter
         fields = ('id', 'name')
 
+
 class ProductParameterSerializer(serializers.ModelSerializer):
+    parameter = serializers.StringRelatedField()
+
     class Meta:
         model = ProductParameter
-        fields = ('id', 'value', 'parameter_id', 'product_info_id')
+        fields = ('parameter', 'value')
+
+
+class ProductInfoSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+    product_parameters = ProductParameterSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = ProductInfo
+        fields = ('id', 'model', 'product', 'shop', 'quantity', 'price', 'price_rrc', 'product_parameters',)
+        read_only_fields = ('id',)
+
 
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = ('id', 'city', 'street', 'house', 'structure', 'building', 'apartment', 'phone')
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ('id', 'dt', 'state', 'contact_id', 'user_id')
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ('id', 'quantity', 'order_id', 'product_info_id')
+        fields = ('id', 'product_info', 'quantity', 'order',)
+        read_only_fields = ('id',)
+        extra_kwargs = {
+            'order': {'write_only': True}
+        }
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    ordered_items = OrderItemSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Order
+        fields = ('id', 'ordered_items', 'state', 'dt', )
+        read_only_fields = ('id',)
