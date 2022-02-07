@@ -173,7 +173,7 @@ class PartnerOrdersView(APIView):
 
 class ProductInfoView(viewsets.ReadOnlyModelViewSet):
     """
-    Класс для отображения информации о товаре
+    Отображения информации о товаре
     """
     throttle_scope = 'anon'
     serializer_class = ProductInfoSerializer
@@ -191,7 +191,6 @@ class ProductInfoView(viewsets.ReadOnlyModelViewSet):
         if category_id:
             query = query & Q(product__category_id=category_id)
 
-        # отбрасываем дубликаты
         queryset = ProductInfo.objects.filter(
             query).select_related(
             'shop', 'product__category').prefetch_related(

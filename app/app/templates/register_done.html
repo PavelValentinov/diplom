@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Регистарация</title>
-</head>
-<body>
- <H1>Список пользователей</H1>
-<form method="post">
-    <% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Регистрация</button>
-</form>
-</body>
-</html>
+{% include "header.html" %}
+
+{% block content %}
+ <H1>Спасибо за регистарацию</H1>
+ <h2>Перейти на <a href="/">главную страницу</a></h2>
+
+{% endblock %}
+
+{% include "footer.html" %}
