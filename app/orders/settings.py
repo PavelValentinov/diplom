@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'orders.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'netology_diplom1',
+        'NAME': '***',
         'USER': 'postgres',
-        'PASSWORD': '456124',
+        'PASSWORD': '***',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
