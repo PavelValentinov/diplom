@@ -38,10 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'orders',
     'rest_framework',
     'app',
-    # 'django_filters',
 ]
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'app/templates'),)
 AUTH_USER_MODEL = "app.User"
